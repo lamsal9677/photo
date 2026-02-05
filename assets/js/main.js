@@ -214,102 +214,116 @@
 
         });
 
-        // Main.
-        var $main = $('#main'),
-            exifDatas = {};
+        // Main - Handle multiple grids
+        var exifDatas = {};
+        var $grids = $('.main-grid');
 
-        // Thumbs.
-        $main.children('.thumb').each(function () {
+        // Process each grid
+        $grids.each(function() {
+            var $main = $(this);
+            var gridExifData = {};
 
-            var $this = $(this),
-                $image = $this.find('.image'), $image_img = $image.children('img'),
-                x;
+            // Thumbs.
+            $main.children('.thumb').each(function () {
 
-            // No image? Bail.
-            if ($image.length == 0)
-                return;
+                var $this = $(this),
+                    $image = $this.find('.image'), $image_img = $image.children('img'),
+                    x;
 
-            // Image.
-            // This sets the background of the "image" <span> to the image pointed to by its child
-            // <img> (which is then hidden). Gives us way more flexibility.
+                // No image? Bail.
+                if ($image.length == 0)
+                    return;
 
-            // Set background.
-            $image.css('background-image', 'url(' + $image_img.attr('src') + ')');
+                // Image.
+                // This sets the background of the "image" <span> to the image pointed to by its child
+                // <img> (which is then hidden). Gives us way more flexibility.
 
-            // Set background position.
-            if (x = $image_img.data('position'))
-                $image.css('background-position', x);
+                // Set background.
+                $image.css('background-image', 'url(' + $image_img.attr('src') + ')');
 
-            // Hide original img.
-            $image_img.hide();
+                // Set background position.
+                if (x = $image_img.data('position'))
+                    $image.css('background-position', x);
 
-            // Hack: IE<11 doesn't support pointer-events, which means clicks to our image never
-            // land as they're blocked by the thumbnail's caption overlay gradient. This just forces
-            // the click through to the image.
-            if (skel.vars.IEVersion < 11)
-                $this
-                    .css('cursor', 'pointer')
-                    .on('click', function () {
-                        $image.trigger('click');
-                    });
+                // Hide original img.
+                $image_img.hide();
 
-            // EXIF data
-            $image_img[0].addEventListener("load", function() {
-                EXIF.getData($image_img[0], function () {
-                    exifDatas[$image_img.data('name')] = getExifDataMarkup(this);
-                });
-            });
+                // Hack: IE<11 doesn't support pointer-events, which means clicks to our image never
+                // land as they're blocked by the thumbnail's caption overlay gradient. This just forces
+                // the click through to the image.
+                if (skel.vars.IEVersion < 11)
+                    $this
+                        .css('cursor', 'pointer')
+                        .on('click', function () {
+                            $image.trigger('click');
+                        });
 
-        });
-
-        // Poptrox.
-        $main.poptrox({
-            baseZIndex: 20000,
-            caption: function ($a) {
-                var $image_img = $a.children('img');
-                var data = exifDatas[$image_img.data('name')];
-                if (data === undefined) {
-                    // EXIF data					
+                // EXIF data
+                $image_img[0].addEventListener("load", function() {
                     EXIF.getData($image_img[0], function () {
-                        data = exifDatas[$image_img.data('name')] = getExifDataMarkup(this);
+                        var imageName = $image_img.data('name');
+                        exifDatas[imageName] = getExifDataMarkup(this, $main);
+                        gridExifData[imageName] = exifDatas[imageName];
                     });
-                }
-                return data !== undefined ? '<p>' + data + '</p>' : ' ';
-            },
-            fadeSpeed: 300,
-            onPopupClose: function () {
-                $body.removeClass('modal-active');
-            },
-            onPopupOpen: function () {
-                $body.addClass('modal-active');
-            },
-            overlayOpacity: 0,
-            popupCloserText: '',
-            popupHeight: 150,
-            popupLoaderText: '',
-            popupSpeed: 300,
-            popupWidth: 150,
-            selector: '.thumb > a.image',
-            usePopupCaption: true,
-            usePopupCloser: true,
-            usePopupDefaultStyling: false,
-            usePopupForceClose: true,
-            usePopupLoader: true,
-            usePopupNav: true,
-            windowMargin: 50
-        });
+                });
 
-        // Hack: Set margins to 0 when 'xsmall' activates.
-        skel
-            .on('-xsmall', function () {
-                $main[0]._poptrox.windowMargin = 50;
-            })
-            .on('+xsmall', function () {
-                $main[0]._poptrox.windowMargin = 0;
             });
 
-        function getExifDataMarkup(img) {
-            var exif = $('#main').data('exif');
+            // Poptrox for this grid.
+            $main.poptrox({
+                baseZIndex: 20000,
+                caption: function ($a) {
+                    var $image_img = $a.children('img');
+                    var imageName = $image_img.data('name');
+                    var data = exifDatas[imageName];
+                    if (data === undefined) {
+                        // EXIF data					
+                        EXIF.getData($image_img[0], function () {
+                            data = exifDatas[imageName] = getExifDataMarkup(this, $main);
+                        });
+                    }
+                    return data !== undefined ? '<p>' + data + '</p>' : ' ';
+                },
+                fadeSpeed: 300,
+                onPopupClose: function () {
+                    $body.removeClass('modal-active');
+                },
+                onPopupOpen: function () {
+                    $body.addClass('modal-active');
+                },
+                overlayOpacity: 0,
+                popupCloserText: '',
+                popupHeight: 150,
+                popupLoaderText: '',
+                popupSpeed: 300,
+                popupWidth: 150,
+                selector: '.thumb > a.image',
+                usePopupCaption: true,
+                usePopupCloser: true,
+                usePopupDefaultStyling: false,
+                usePopupForceClose: true,
+                usePopupLoader: true,
+                usePopupNav: true,
+                windowMargin: 50
+            });
+
+            // Hack: Set margins to 0 when 'xsmall' activates.
+            skel
+                .on('-xsmall', function () {
+                    if ($main[0]._poptrox) {
+                        $main[0]._poptrox.windowMargin = 50;
+                    }
+                })
+                .on('+xsmall', function () {
+                    if ($main[0]._poptrox) {
+                        $main[0]._poptrox.windowMargin = 0;
+                    }
+                });
+        });
+
+        function getExifDataMarkup(img, $grid) {
+            var exif = $grid.data('exif');
+            if (!exif) return '';
             var template = '';
             for (var current in exif) {
                 var current_data = exif[current];

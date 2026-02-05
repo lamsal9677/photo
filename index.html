@@ -10,25 +10,120 @@ layout: default
         <h1><a href="index.html"><strong>{{ site.header.title }}</strong> {{ site.header.subtitle }}</a></h1>
         <nav>
             <ul>
-                <li><a href="#footer" class="icon fa-info-circle">About</a></li>
+                <li><a href="#footer" class="icon fa-info-circle">Contact Us</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- Main -->
-    <div id="main" data-exif='{{ site.exif }}'>
-        {% for image in site.static_files %}
-        {% if image.path contains 'fulls' %}
-        <article class="thumb">
-            <a href="{{ site.baseurl }}{{ site.image_fulls_loc }}/{{ image.name }}" class="image">
-                <img src="{{ site.baseurl }}{{ site.image_thumbs_loc }}/{{ image.name }}" alt=""
-                     data-name="{{ image.name }}"/></a>
-            <!--<h2></h2>
-            <p></p>-->
-        </article>
-        {% endif %}
-        {% endfor %}
-    </div>
+    <!-- Portrait Photography Section -->
+    <section class="photo-section" id="portrait-section">
+        <div class="section-header">
+            <h2>Portrait Photography</h2>
+            <p>Celebrating human expression and emotion</p>
+        </div>
+        <div id="main-portraits" class="main-grid" data-exif='{{ site.exif }}'>
+            {% for image in site.static_files %}
+                {% if image.path contains 'fulls' %}
+                    {% assign lower_name = image.name | downcase %}
+                    {% if lower_name contains 'potrait' or lower_name contains 'portrait' %}
+                        <article class="thumb">
+                            <a href="{{ site.baseurl }}{{ site.image_fulls_loc }}/{{ image.name }}" class="image">
+                                <img src="{{ site.baseurl }}{{ site.image_thumbs_loc }}/{{ image.name }}" alt="Portrait Photography" data-name="{{ image.name }}"/>
+                            </a>
+                        </article>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Landscape Photography Section -->
+    <section class="photo-section" id="landscape-section">
+        <div class="section-header">
+            <h2>Landscape Photography</h2>
+            <p>Capturing the beauty and grace of our beautiful landscapes</p>
+        </div>
+            <div id="main-landscape" class="main-grid" data-exif='{{ site.exif }}'>
+            {% for image in site.static_files %}
+                {% if image.path contains 'fulls' %}
+                    {% assign lower_name = image.name | downcase %}
+                    {% if lower_name contains 'landscape' %}
+                        <article class="thumb">
+                            <a href="{{ site.baseurl }}{{ site.image_fulls_loc }}/{{ image.name }}" class="image">
+                                <img src="{{ site.baseurl }}{{ site.image_thumbs_loc }}/{{ image.name }}" alt="Landscape Photography" data-name="{{ image.name }}"/>
+                            </a>
+                        </article>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Insect Photography Section -->
+    <section class="photo-section" id="insect-section">
+        <div class="section-header">
+            <h2>Insect Photography</h2>
+            <p>Capturing the beauty and grace of our insect friends</p>
+        </div>
+        <div id="main-insect" class="main-grid" data-exif='{{ site.exif }}'>
+            {% for image in site.static_files %}
+                {% if image.path contains 'fulls' %}
+                    {% assign lower_name = image.name | downcase %}
+                    {% if lower_name contains 'insect' %}
+                        <article class="thumb">
+                            <a href="{{ site.baseurl }}{{ site.image_fulls_loc }}/{{ image.name }}" class="image">
+                                <img src="{{ site.baseurl }}{{ site.image_thumbs_loc }}/{{ image.name }}" alt="Insect Photography" data-name="{{ image.name }}"/>
+                            </a>
+                        </article>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Bird Photography Section -->
+    <section class="photo-section" id="bird-section">
+        <div class="section-header">
+            <h2>Bird Photography</h2>
+            <p>Capturing the beauty and grace of our feathered friends</p>
+        </div>
+        <div id="main-birds" class="main-grid" data-exif='{{ site.exif }}'>
+            {% for image in site.static_files %}
+                {% if image.path contains 'fulls' %}
+                    {% assign lower_name = image.name | downcase %}
+                    {% if lower_name contains 'bird' %}
+                        <article class="thumb">
+                            <a href="{{ site.baseurl }}{{ site.image_fulls_loc }}/{{ image.name }}" class="image">
+                                <img src="{{ site.baseurl }}{{ site.image_thumbs_loc }}/{{ image.name }}" alt="Bird Photography" data-name="{{ image.name }}"/>
+                            </a>
+                        </article>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Wildlife Photography Section -->
+    <section class="photo-section" id="wildlife-section">
+        <div class="section-header">
+            <h2>Wildlife Photography</h2>
+            <p>Capturing the beauty and grace of our wild friends</p>
+        </div>
+        <div id="main-wildlife" class="main-grid" data-exif='{{ site.exif }}'>
+            {% for image in site.static_files %}
+                {% if image.path contains 'fulls' %}
+                    {% assign lower_name = image.name | downcase %}
+                    {% if lower_name contains 'wildlife' %}
+                        <article class="thumb">
+                            <a href="{{ site.baseurl }}{{ site.image_fulls_loc }}/{{ image.name }}" class="image">
+                                <img src="{{ site.baseurl }}{{ site.image_thumbs_loc }}/{{ image.name }}" alt="Bird Photography" data-name="{{ image.name }}"/>
+                            </a>
+                        </article>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </section>
 
     <!-- Footer -->
     <footer id="footer" class="panel">
@@ -39,21 +134,6 @@ layout: default
                     <p>{{ site.footer.bio }}</p>
                     <p>{{ site.footer.github }}</p>
                 </section>
-                <!-- <section>
-                    <h2>Sponsor</h2>
-                    <div class="ad">
-                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                        <ins class="adsbygoogle"
-                             style="display:block; text-align:center;"
-                             data-ad-layout="in-article"
-                             data-ad-format="fluid"
-                             data-ad-client="ca-pub-1702577941194110"
-                             data-ad-slot="9823584598"></ins>
-                        <script>
-                            (adsbygoogle = window.adsbygoogle || []).push({});
-                        </script>
-                    </div>
-                </section> -->
                 <section>
                     <h2>Follow me on ...</h2>
                     <ul class="icons">
@@ -101,9 +181,6 @@ layout: default
                         {% endif %}
                     </ul>
                 </section>
-                <p class="copyright">
-                    &copy; {{ site.author }}. Design: {{ site.web_design }}
-                </p>
             </div>
             <div>
                 <section>

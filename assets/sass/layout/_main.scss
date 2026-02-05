@@ -15,17 +15,38 @@
 		));
 		@include vendor('display', 'flex');
 		@include vendor('flex-wrap', 'wrap');
+		@include vendor('justify-content', 'center');
 		-webkit-tap-highlight-color: rgba(255,255,255,0);
-
+		gap: _misc(thumb-gap);
+		
 		.thumb {
 			@include vendor('transition', (
-				'opacity 1.25s ease-in-out'
+				'opacity 1.25s ease-in-out',
+				'transform #{_duration(transition)} ease',
+				'box-shadow #{_duration(transition)} ease'
 			));
 			@include vendor('pointer-events', 'auto');
 			-webkit-tap-highlight-color: rgba(255,255,255,0);
 			opacity: 1;
 			overflow: hidden;
 			position: relative;
+			background: _palette(bg-alt);
+			border-radius: 4px;
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3),
+			            0 1px 3px rgba(0, 0, 0, 0.2);
+			cursor: pointer;
+
+			&:hover {
+				@include vendor('transform', 'translateY(-4px) scale(1.02)');
+				box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4),
+				            0 4px 8px rgba(0, 0, 0, 0.3),
+				            0 0 0 1px rgba(52, 165, 142, 0.2);
+				z-index: 1;
+			}
+
+			&:active {
+				@include vendor('transform', 'translateY(-2px) scale(1.01)');
+			}
 
 			&:after {
 				@include vendor('background-image', 'linear-gradient(to top, rgba(10,17,25,0.35) 5%, rgba(10,17,25,0) 35%)');
@@ -51,6 +72,11 @@
 				position: absolute;
 				top: 0;
 				width: 100%;
+				@include vendor('transition', 'transform #{_duration(transition)} ease');
+			}
+
+			&:hover > .image {
+				@include vendor('transform', 'scale(1.05)');
 			}
 
 			> h2 {
@@ -111,12 +137,27 @@
 		@mixin thumb($rows, $columns, $pad, $minHeight) {
 			$baseDelay: _duration(header) - 0.5;
 			$defaultDelay: $baseDelay + (((($rows * $columns) + 1) * 1.5) * _duration(thumb));
+			$aspectRatio: _misc(thumb-aspect-ratio);
+			$gap: _misc(thumb-gap);
+			// Calculate width accounting for gaps: (100% - (n-1 gaps)) / n columns
+			$gapTotal: ($columns - 1) * $gap;
+			$thumbWidth: calc((100% - #{$gapTotal}) / #{$columns});
 
 			.thumb {
 				@include vendor('transition-delay', '#{$defaultDelay}');
-				height: calc(#{100vh / ($rows + $pad)} - #{_size(header) / $rows});
-				min-height: $minHeight;
-				width: (100% / $columns);
+				width: $thumbWidth;
+				flex: 0 0 $thumbWidth;
+				max-width: $thumbWidth;
+				height: 0;
+				padding-bottom: calc((100% - #{$gapTotal}) / #{$columns} * (1 / #{$aspectRatio}));
+				position: relative;
+				overflow: hidden;
+
+				@supports (aspect-ratio: 1) {
+					height: auto;
+					padding-bottom: 0;
+					aspect-ratio: $aspectRatio;
+				}
 
 				@for $i from 1 through (($rows * $columns) * 1.5) {
 					&:nth-child(#{$i}) {
@@ -174,4 +215,69 @@
 				);
 			}
 
+	}
+
+	// Photo Sections
+	.photo-section {
+		margin: 0 0 (_size(element-margin) * 2) 0;
+		padding: (_size(element-margin) * 1.5) 0 0 0;
+
+		&:first-child {
+			padding-top: 0;
+		}
+
+		// Responsive gap adjustments
+		.main-grid {
+			@include breakpoint(medium) {
+				gap: (_misc(thumb-gap) * 0.75);
+			}
+
+			@include breakpoint(small) {
+				gap: (_misc(thumb-gap) * 0.5);
+			}
+		}
+
+		.section-header {
+			text-align: center;
+			margin: 0 0 (_size(element-margin) * 1.5) 0;
+			padding: 0 1.5em;
+
+			h2 {
+				font-size: 2em;
+				margin: 0 0 (_size(element-margin) * 0.5) 0;
+				color: _palette(fg-bold);
+				letter-spacing: _font(kerning-alt);
+			}
+
+			p {
+				font-size: 1.1em;
+				color: _palette(fg-light);
+				font-style: italic;
+				margin: 0;
+			}
+
+			@include breakpoint(medium) {
+				h2 {
+					font-size: 1.5em;
+				}
+
+				p {
+					font-size: 1em;
+				}
+			}
+
+			@include breakpoint(small) {
+				h2 {
+					font-size: 1.25em;
+				}
+
+				p {
+					font-size: 0.9em;
+				}
+			}
+		}
+
+		.main-grid {
+			@extend #main;
+		}
 	}

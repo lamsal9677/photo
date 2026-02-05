@@ -1,6 +1,10 @@
 // Misc.
 	$misc: (
 		z-index-base:		10000,
+		// Thumb aspect ratio: width/height (e.g. 4/3 = 4:3). Uniform cells = consistent crop for any photo.
+		thumb-aspect-ratio:	4 / 3,
+		// Gap between thumbnails (tile spacing)
+		thumb-gap:			1em,
 		main-layout:		(
 			default:		(
 				rows:		2,
