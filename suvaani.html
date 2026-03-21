@@ -1,0 +1,133 @@
+---
+layout: default
+---
+
+<!-- Wrapper -->
+<div id="wrapper">
+
+    <!-- Header -->
+    <header id="header">
+        <h1><a href="index.html"><strong>{{ site.header.title }}</strong> {{ site.header.subtitle }}</a></h1>
+        <nav>
+            <ul>
+                <li><a href="#footer" class="icon fa-info-circle">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Wildlife Photography Section -->
+    <section class="photo-section" id="wildlife-section">
+        <div class="section-header">
+            <h2>Suvaani's Paasni</h2>
+            <p>Collection of Photos from Suvaani's Paasni Reception - 3/14/2025</p>
+        </div>
+        <div id="main-wildlife" class="main-grid" data-exif='{{ site.exif }}'>
+            {% for image in site.static_files %}
+                {% if image.path contains 'fulls' %}
+                    {% assign lower_name = image.name | downcase %}
+                    {% if lower_name contains 'suvaani' %}
+                        <article class="thumb">
+                            <div href="{{ site.baseurl }}{{ site.image_fulls_loc }}/{{ image.name }}" class="image">
+                            <img src="{{ site.baseurl }}{{ site.image_thumbs_loc }}/{{ image.name }}" alt="Bird Photography" data-name="{{ image.name }}"/>
+                            </div>
+                        </article>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer" class="panel">
+        <div class="inner split">
+            <div>
+                <section>
+                    <h2>{{ site.footer.name }}</h2>
+                    <p>{{ site.footer.bio }}</p>
+                    <p>{{ site.footer.github }}</p>
+                </section>
+                <section>
+                    <h2>Follow me on ...</h2>
+                    <ul class="icons">
+                        {% if site.social_urls.email %}
+                            <li>
+                                <a href="mailto:{{ site.social_urls.email }}" class="icon fa-envelope">
+                                    <span class="label">Email</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if site.social_urls.facebook %}
+                            <li>
+                                <a href="{{ site.social_urls.facebook }}" class="icon fa-facebook">
+                                    <span class="label">Facebook</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if site.social_urls.twitter %}
+                            <li>
+                                <a href="{{ site.social_urls.twitter }}" class="icon fa-twitter">
+                                    <span class="label">Twitter</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if site.social_urls.instagram %}
+                            <li>
+                                <a href="{{ site.social_urls.instagram }}" class="icon fa-instagram">
+                                    <span class="label">Instagram</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if site.social_urls.dribbble %}
+                            <li>
+                                <a href="{{ site.social_urls.dribbble }}" class="icon fa-dribbble">
+                                    <span class="label">Dribbble</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if site.social_urls.github %}
+                            <li>
+                                <a href="{{ site.social_urls.github }}" class="icon fa-github">
+                                    <span class="label">GitHub</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if site.social_urls.linkedin %}
+                            <li>
+                                <a href="{{ site.social_urls.linkedin }}" class="icon fa-linkedin">
+                                    <span class="label">LinkedIn</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if site.social_urls.email %}
+                            <li>
+                                <a href="mailto:{{ site.social_urls.email }}" class="icon fa-envelope">
+                                    <span class="label">Email</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </section>
+            </div>
+            <div>
+                <section>
+                    <h2>Get in touch</h2>
+                    <form action="https://api.web3forms.com/submit" method="POST">
+                      <input type="hidden" name="access_key" value="cd83d23c-848f-43d5-8596-251bb0b8c8ce">
+                      <div class="field half first">
+                          <input type="text" name="name" placeholder = "Name" required>
+                        </div>
+                     <div class="field half">
+                      <input type="text" name="email" placeholder = "Email/Phone Number" required>
+                    </div>
+                        <div class="field">
+                      <textarea name="message" required rows="4" placeholder = "Message Here"></textarea>
+                        </div>
+                        <ul class="actions">
+                      <li><button type="submit">Submit</button></li>
+                        </ul>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </footer>
+</div>
