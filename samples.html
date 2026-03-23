@@ -15,22 +15,20 @@ layout: default
         </nav>
     </header>
 
-    <!-- Wildlife Photography Section -->
-    <section class="photo-section" id="wildlife-section">
+    <section class="photo-section" id="portrait-section">
         <div class="section-header">
-            <h2>Suvaani's Paasni</h2>
-            <p>Collection of Photos from Suvaani's Paasni Reception - 3/14/2025</p>
-            <p>Download Full Resolution Photos: <a>https://drive.google.com/drive/folders/10oSEoNfD4smBaAZ18ywiL1QBlWCWD2-T?usp=sharing</a></p>
+            <h2>Sample Images</h2>
+            <p>Collection of Images from Mini/Full Sessions</p>
         </div>
-        <div id="main-wildlife" class="main-grid" data-exif='{{ site.exif }}'>
+        <div id="main-portraits" class="main-grid" data-exif='{{ site.exif }}'>
             {% for image in site.static_files %}
                 {% if image.path contains 'fulls' %}
                     {% assign lower_name = image.name | downcase %}
-                    {% if lower_name contains 'suvaani' %}
+                    {% if lower_name contains 'sample' or lower_name contains 'samples' %}
                         <article class="thumb">
-                            <div href="{{ site.baseurl }}{{ site.image_fulls_loc }}/{{ image.name }}" class="image">
-                            <img src="{{ site.baseurl }}{{ site.image_thumbs_loc }}/{{ image.name }}" alt="Bird Photography" data-name="{{ image.name }}"/>
-                            </div>
+                            <a href="{{ site.baseurl }}{{ site.image_fulls_loc }}/{{ image.name }}" class="image">
+                                <img src="{{ site.baseurl }}{{ site.image_thumbs_loc }}/{{ image.name }}" alt="Portrait Photography" data-name="{{ image.name }}"/>
+                            </a>
                         </article>
                     {% endif %}
                 {% endif %}
